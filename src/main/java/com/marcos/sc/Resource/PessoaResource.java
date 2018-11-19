@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 @RequestMapping(value = "/api")//endpoint
 public class PessoaResource {
@@ -19,15 +21,22 @@ public class PessoaResource {
     public List<Pessoa> buscarPessoa(){
         return pessoaRepository.findAll();
     }
+
     @GetMapping("/pessoa/cpf/{cpf}")//endpoint
     public ResponseEntity<Pessoa> buscarCPF(@PathVariable String cpf){
         Pessoa pessoaResultado = pessoaRepository.buscaCpf(cpf);
         if(pessoaResultado == null){
-            return ResponseEntity.ok(null);
+            return ok(null);
         }
-        return ResponseEntity.ok(pessoaResultado);
+        return ok(pessoaResultado);
     }
 
+    @GetMapping("/pessoa/ativo/{ativo}")//endpoint busca por pessoa ativa
+    public List<Pessoa> buscarPessoaAtiva(@PathVariable String ativo){
+        List<Pessoa> pessoaResultado = (List<Pessoa>) pessoaRepository.buscarAtivos(ativo);
+
+        return (List<Pessoa>) pessoaResultado;
+    }
 
 
 
@@ -36,7 +45,7 @@ public class PessoaResource {
         return pessoaRepository.save(pessoa);
     }
 
-    @PutMapping("/pessoa")
+    @PutMapping("/pessoa") //endpoint alterar pessoa
     public Pessoa AtualizarPessoa(@RequestBody Pessoa pessoa){
         return pessoaRepository.save(pessoa);
     }

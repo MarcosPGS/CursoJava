@@ -1,7 +1,6 @@
 package com.marcos.sc.Negocio;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StreamUtils;
 import com.marcos.sc.Entity.Pessoa;
 import com.marcos.sc.Repository.PessoaRepositoryQuery;
 import org.springframework.util.StringUtils;
@@ -21,7 +20,7 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
 
    @PersistenceContext
    private EntityManager manager;
-
+    //===========================================BUSCA POR CPF=============================================
    @Override
     public Pessoa buscaCpf(String cpf) {
        Pessoa pessoaEncontrada = null;
@@ -29,7 +28,7 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
        try {
 
 
-           CriteriaBuilder builder = manager.getCriteriaBuilder();// CriteriaBuilder - contrutor de comando (delete,insete,like)
+           CriteriaBuilder builder = manager.getCriteriaBuilder();// CriteriaBuilder - construtor de comando (delete,insete,like)
            CriteriaQuery<Pessoa> pessoaCr = builder.createQuery(Pessoa.class);//CriteriaQuery - Repesentante da tabela
 
            Root<Pessoa> pessoaRoot = pessoaCr.from(Pessoa.class);//Root -repesentante da tabela que permite fazer um join
@@ -49,6 +48,8 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
        }
    }
 
+
+
     private Predicate[] criarRestricoes(String cpf, CriteriaBuilder builder, Root<Pessoa> pessoaRoot) {
         List<Predicate> predicates = new ArrayList<>();
         if(!StringUtils.isEmpty(cpf)){
@@ -56,5 +57,42 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
 
         }
         return predicates.toArray(new Predicate[predicates.size()]);
+    }
+
+
+//===========================================BUSCA PESSOA ATIVA=============================================
+    @Override
+    public List<Pessoa> buscarAtivos(String ativo){
+
+       Pessoa pessoaEncontradaAtiva = null;
+
+       try{
+           CriteriaBuilder builder = manager.getCriteriaBuilder();
+           CriteriaQuery pessoaCr = builder.createQuery(Pessoa.class);
+
+           Root<Pessoa> pessoaRoot = pessoaCr.from(Pessoa.class);
+
+           Predicate[] predicates = RestricoesAtivos(ativo,builder, pessoaRoot);
+           pessoaCr.where(predicates);
+
+
+           TypedQuery<Pessoa> query = manager.createQuery(pessoaCr);
+
+           pessoaEncontradaAtiva = (Pessoa) query.getResultList();
+           return (List<Pessoa>) pessoaEncontradaAtiva;
+
+       }catch (Exception e){
+           return (List<Pessoa>) pessoaEncontradaAtiva;
+
+       }
+
+    }
+
+    private Predicate[] RestricoesAtivos(String ativo, CriteriaBuilder builder, Root<Pessoa> pessoaRoot) {
+       List<Predicate> predicates = new ArrayList<>();
+       if ((ativo) == "s"){
+           predicates.add(builder.equal(pessoaRoot.get("ativo"),ativo));
+       }
+       return predicates.toArray(new Predicate[predicates.size()]);
     }
 }
