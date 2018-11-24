@@ -1,8 +1,8 @@
-package com.marcos.sc.Repository;
+package com.marcos.sc.repository;
 
-import com.marcos.sc.Entity.PessoaEndereco;
+import com.marcos.sc.entity.PessoaEndereco;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PessoaEnderecoRepository extends JpaRepository<PessoaEndereco, Long> {
+public interface PessoaEnderecoRepository extends JpaRepository<PessoaEndereco, Long>, PessoaEnderecoQuery {
 
 }

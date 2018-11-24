@@ -1,8 +1,8 @@
-package com.marcos.sc.Negocio;
+package com.marcos.sc.negocio;
 
 import org.springframework.stereotype.Repository;
-import com.marcos.sc.Entity.Pessoa;
-import com.marcos.sc.Repository.PessoaRepositoryQuery;
+import com.marcos.sc.entity.Pessoa;
+import com.marcos.sc.repository.PessoaRepositoryQuery;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -23,7 +23,7 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
     //===========================================BUSCA POR CPF=============================================
    @Override
     public Pessoa buscaCpf(String cpf) {
-       Pessoa pessoaEncontrada = null;
+      Pessoa pessoaEncontrada = null;
 
        try {
 
@@ -64,7 +64,7 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
     @Override
     public List<Pessoa> buscarAtivos(String ativo){
 
-       Pessoa pessoaEncontradaAtiva = null;
+       List<Pessoa> pessoaEncontradaAtiva = null;
 
        try{
            CriteriaBuilder builder = manager.getCriteriaBuilder();
@@ -78,7 +78,7 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
 
            TypedQuery<Pessoa> query = manager.createQuery(pessoaCr);
 
-           pessoaEncontradaAtiva = (Pessoa) query.getResultList();
+           pessoaEncontradaAtiva = (List<Pessoa>) query.getResultList();
            return (List<Pessoa>) pessoaEncontradaAtiva;
 
        }catch (Exception e){
@@ -90,7 +90,7 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
 
     private Predicate[] RestricoesAtivos(String ativo, CriteriaBuilder builder, Root<Pessoa> pessoaRoot) {
        List<Predicate> predicates = new ArrayList<>();
-       if ((ativo) == "s"){
+       if ((!StringUtils.isEmpty(ativo)) && ((ativo).equals("s"))){
            predicates.add(builder.equal(pessoaRoot.get("ativo"),ativo));
        }
        return predicates.toArray(new Predicate[predicates.size()]);

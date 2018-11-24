@@ -1,4 +1,4 @@
-package com.marcos.sc.Entity;
+package com.marcos.sc.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +10,9 @@ public class PessoaEndereco implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+
+    @Column(name = "idpessoa_endereco")
+    private Long idPessoaEndereco;
 
     @Column(name = "cep")
     private String cep;
@@ -25,10 +27,83 @@ public class PessoaEndereco implements Serializable {
     private Long idpessoa;
 
 
-    //FIXME: para ser feita em casa;
-    //FIXME: significa uma pedencia a ser feita
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //private Tipo tipo;
-    //@ManyToOne(fetch =FetchType.LAZY)
-    //private Cidade cidade;
+
+
+   @OneToOne
+   @JoinColumn(name = "idcidade")
+    private Cidade cidade;
+
+    @OneToOne
+    @JoinColumn(name = "idtipo_de_logradouro")
+    private TipoDeLogradouro tipoDeLogradouro;
+
+	public Long getIdPessoaEndereco() {
+		return idPessoaEndereco;
+	}
+
+	public void setIdPessoaEndereco(Long idPessoaEndereco) {
+		this.idPessoaEndereco = idPessoaEndereco;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public Long getIdpessoa() {
+		return idpessoa;
+	}
+
+	public void setIdpessoa(Long idpessoa) {
+		this.idpessoa = idpessoa;
+	}
+
+	public Cidade getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
+	}
+
+	public TipoDeLogradouro getTipoDeLogradouro() {
+		return tipoDeLogradouro;
+	}
+
+	public void setTipoDeLogradouro(TipoDeLogradouro tipoDeLogradouro) {
+		this.tipoDeLogradouro = tipoDeLogradouro;
+	}
+
+
+
+//FIXME: significa uma pedencia a ser feita
+
+
 }

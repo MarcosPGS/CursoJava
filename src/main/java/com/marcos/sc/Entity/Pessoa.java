@@ -1,4 +1,4 @@
-package com.marcos.sc.Entity;
+package com.marcos.sc.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +12,7 @@ public class Pessoa implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idpessoa")
-    private Long idpessoa;
+    private Long idPessoa;
     @Column(name = "nome")
     private String nome;
     @Column(name = "cpf")
@@ -20,16 +20,15 @@ public class Pessoa implements Serializable {
     @Column(name = "ativo")
     private String ativo;
 
-    @OneToMany(mappedBy = "idpessoa",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-
+    @OneToMany(mappedBy = "idpessoa",fetch = FetchType.LAZY,cascade= {CascadeType.MERGE,CascadeType.REMOVE,CascadeType.REFRESH})
     private List<PessoaEndereco> pessoaEnderecos;
 
-    public Long getIdpessoa() {
-        return idpessoa;
+    public Long getIdPessoa() {
+        return idPessoa;
     }
 
-    public void setIdpessoa(Long idpessoa) {
-        this.idpessoa = idpessoa;
+    public void setIdPessoa(Long idPessoa) {
+        this.idPessoa = idPessoa;
     }
 
     public String getNome() {
