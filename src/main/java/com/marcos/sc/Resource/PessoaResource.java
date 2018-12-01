@@ -11,6 +11,7 @@ import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+@CrossOrigin //serve para resolver o problema de domínio cruzado
 @RestController
 @RequestMapping(value = "/api")//endpoint
 public class PessoaResource {
@@ -49,10 +50,7 @@ public class PessoaResource {
         return pessoaService.salvarCompleto(pessoa);
     }
 
-    //@PutMapping("/pessoa") //endpoint alterar pessoa
-    //public Pessoa AtualizarPessoa(@RequestBody Pessoa pessoa){
-        //return pessoaRepository.save(pessoa);
-    //}
+    
 
 
 

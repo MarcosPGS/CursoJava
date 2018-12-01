@@ -33,12 +33,12 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
 
            Root<Pessoa> pessoaRoot = pessoaCr.from(Pessoa.class);//Root -repesentante da tabela que permite fazer um join
 
-           Predicate[] predicates = criarRestricoes(cpf, builder, pessoaRoot);//Predicate são restrições (where,and, or, in)
+           Predicate[] predicates = criarRestricoes(cpf, builder, pessoaRoot);//Predicate são Construtor de restrições (where,and, or, in)
            pessoaCr.where(predicates);
 
            TypedQuery<Pessoa> query = manager.createQuery(pessoaCr);//TypedQuery -valida as escritas do banco
 
-           pessoaEncontrada = query.getSingleResult();//execulto o escripe posso usar Single ou Lis<>
+           pessoaEncontrada = query.getSingleResult();//execulto o escripiti, posso usar Single ou Lis<>
 
            return pessoaEncontrada;
 
@@ -68,7 +68,7 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
 
        try{
            CriteriaBuilder builder = manager.getCriteriaBuilder();
-           CriteriaQuery pessoaCr = builder.createQuery(Pessoa.class);
+           CriteriaQuery<Pessoa> pessoaCr = builder.createQuery(Pessoa.class);
 
            Root<Pessoa> pessoaRoot = pessoaCr.from(Pessoa.class);
 
