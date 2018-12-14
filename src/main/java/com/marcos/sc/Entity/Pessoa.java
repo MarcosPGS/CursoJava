@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Table(name = "pessoa")
+@Entity  //essa anotação @Entity serve para tornar a nossa classe uma entidade do banco de dados
+@Table(name = "pessoa")  // essa anotação  @Table serve para da o nome da nossa entidade do banco de dados
 public class Pessoa implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idpessoa")
+    @Id   // essa anotação @Id serve para marcar a propriedade ID como identificador ou seja nossa chave primaria no banco de dados
+    @GeneratedValue(strategy = GenerationType.AUTO)  // essa anotação @GeneratedValue serve para gerar automaticamente meu ID, ouseja um autoincremente
+    @Column(name = "idpessoa")  // essa anotação @Column serve para dizer que é uma coluna da nossa entidade com seus respectivos atributos
     private Long idPessoa;
     @Column(name = "nome")
     private String nome;
@@ -20,12 +20,16 @@ public class Pessoa implements Serializable {
     @Column(name = "ativo")
     private String ativo;
 
+    // essa anotação @OneToMany serve para fazer relacionamento entre entidades no meu banco de dados.
+    // aqui diz que uma PESSOA pode ter 1 OU VARIOS ENDEREÇO
     @OneToMany(mappedBy = "idpessoa",fetch = FetchType.LAZY,cascade= {CascadeType.MERGE,CascadeType.REMOVE,CascadeType.REFRESH})
     private List<PessoaEndereco> pessoaEnderecos;
     
     @OneToMany(mappedBy = "idpessoa",fetch = FetchType.LAZY,cascade= {CascadeType.MERGE,CascadeType.REMOVE,CascadeType.REFRESH})
     private List<Telefone> telefones;
     
+    // essa anotação @ManyToMany serve para fazer relacionamento entre entidades no meu banco de dados.
+    // aqui diz que uma PESSOA pode ter varios cursos como curso pode ter varias pessoas
     @ManyToMany
     @JoinTable(name="pessoa_curso", joinColumns= {@JoinColumn(name="idpessoa")}, inverseJoinColumns = {@JoinColumn(name="idcurso")})
     private List<Curso> cursos;

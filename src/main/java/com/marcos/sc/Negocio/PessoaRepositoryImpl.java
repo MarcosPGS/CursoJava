@@ -15,13 +15,15 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Repository // essa anotação @Repository serve para dizer que minha classe é uma repository
 public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
 
    @PersistenceContext
-   private EntityManager manager;
+   private EntityManager manager;//gerenciador do banco de dados
+   // EntityManager - é o recurso responsável por realizar as operações de sincronismo com o banco de dados
+   //(inserir, remover, atualizar ou consultar - CRUD) e gerenciar o ciclo de vida das entidades.
     //===========================================BUSCA POR CPF=============================================
-   @Override
+   @Override  // essa anotação @Override serve para sobreescrever um metodo
     public Pessoa buscaCpf(String cpf) {
       Pessoa pessoaEncontrada = null;
 

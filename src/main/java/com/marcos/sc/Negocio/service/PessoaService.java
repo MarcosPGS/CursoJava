@@ -9,14 +9,20 @@ import com.marcos.sc.repository.TelefoneRepository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 
 
 
-@Service
+@Service //essa anotação diz queminha clase é uma classe de serviços
 public class PessoaService {
-    @Autowired
+    @Autowired//essa anotacao injeta uma dependencia no caso a "PessoaRepository"
     PessoaRepository pessoaRepository;
     PessoaEnderecoRepository pessoaEnderecoRepository;
     TelefoneRepository telefoneRepository;
@@ -56,6 +62,36 @@ public class PessoaService {
         return pessoaRepository.buscarAtivos(ativo);
     }
     
+    
+    public ResponseEntity<Object> consultarCpf(String cpf){
+    	consutarViaMarket(cpf);
+    	return consutarViaMarket(cpf);
+    }
+    
+    public ResponseEntity<Object> consutarViaMarket(String cpf){
+    	
+    	String url = "https://consulta-situacao-cpf-cnpj.p.mashape.com/consultaSituacaoCPF?cpf=" + cpf;
+    	String servico = url;
+    	
+    	ResponseEntity<Object> resultado = null;
+    	
+    	RestTemplate gerenciadorDeRequisicao = new RestTemplate();
+    	
+    	HttpHeaders httpHeaders = new HttpHeaders();
+    	
+    	httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+    	
+    	HttpEntity<?> requisicao = new HttpEntity<>(httpHeaders);
+    	
+    	try {
+    		resultado = gerenciadorDeRequisicao.exchange(servico, HttpMethod.GET,requisicao, Object.class);
+			
+		} catch (Exception e) {
+			return null;
+		}
+    	
+    	return resultado;
+    }
    
     
 }

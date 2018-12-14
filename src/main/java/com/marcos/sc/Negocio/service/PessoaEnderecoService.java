@@ -9,13 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.marcos.sc.entity.PessoaEndereco;
+
 import com.marcos.sc.repository.PessoaEnderecoRepository;
 
-@Service
+@Service //essa anotação diz que minha clase é uma classe de serviços
 public class PessoaEnderecoService {
 
-	@Autowired
+	@Autowired //essa anotacao injeta uma dependencia no caso a "PessoaEnderecoRepository"
 	PessoaEnderecoRepository pessoaEnderecoRepository;
 	
 	 public ResponseEntity<Object> buscaPorCep(String cep) {

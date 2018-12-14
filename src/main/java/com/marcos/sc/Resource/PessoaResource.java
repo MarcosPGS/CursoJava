@@ -12,8 +12,9 @@ import java.util.List;
 import static org.springframework.http.ResponseEntity.ok;
 
 @CrossOrigin //serve para resolver o problema de domínio cruzado
-@RestController
-@RequestMapping(value = "/api")//endpoint
+@RestController //@RestController é uma versão especializada do controlador.
+//Ele inclui as @Controller e @ResponseBody anotações e, como resultado, simplifica a implementação controlador:
+@RequestMapping(value = "/api")//endpoint    @RequestMapping - implementar o manipulador de URLs
 public class PessoaResource {
 
     @Autowired // injeção de dependencia
@@ -40,16 +41,21 @@ public class PessoaResource {
 
         return (List<Pessoa>) pessoaResultado;
     }
+    
+    @GetMapping("/pessoa/buscacpf/{cpf}")
+    public ResponseEntity<Object> consultarCpf(@PathVariable String cpf){
+    	return pessoaService.consultarCpf(cpf);
+    }
 
 
 
     @PostMapping("/pessoa")
     public Pessoa salvarPessoa(@RequestBody Pessoa pessoa){
 
-
         return pessoaService.salvarCompleto(pessoa);
     }
 
+    
     
 
 
