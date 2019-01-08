@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-
+import com.marcos.sc.entity.Pessoa;
 import com.marcos.sc.repository.PessoaEnderecoRepository;
 
 @Service //essa anotação diz que minha clase é uma classe de serviços
@@ -18,17 +18,14 @@ public class PessoaEnderecoService {
 	@Autowired //essa anotacao injeta uma dependencia no caso a "PessoaEnderecoRepository"
 	PessoaEnderecoRepository pessoaEnderecoRepository;
 	
+	
+	
+	
+	
 	 public ResponseEntity<Object> buscaPorCep(String cep) {
-	    	
-	    	//PessoaEndereco pessoaEndereco = new PessoaEndereco();
-	    	
-	    	
 	    	buscaPorCepViaBrasil(cep);
-	    	
-	    	
 	    	return buscaPorCepViaBrasil(cep);
-	    }
-	 
+	    } 
 	 
 	 
 	 
@@ -50,14 +47,15 @@ public class PessoaEnderecoService {
 		HttpEntity<?> requisicao = new HttpEntity<>(httpHeaders);
 		try {
 			
-			resultado = gerenciadorDeRequisicao.exchange(servico, HttpMethod.GET,requisicao, Object.class);
-			
+			resultado = gerenciadorDeRequisicao.exchange(servico, HttpMethod.GET,requisicao, Object.class);			
 			
 		} catch (Exception e) {
 			return null;
-		}
-		
+		}	
 		
 		return resultado;
 	 }
+	 
+	 
+	 
 }

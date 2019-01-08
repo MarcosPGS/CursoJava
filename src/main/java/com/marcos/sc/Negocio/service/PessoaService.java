@@ -2,9 +2,11 @@ package com.marcos.sc.negocio.service;
 
 import com.marcos.sc.entity.Pessoa;
 import com.marcos.sc.entity.PessoaEndereco;
+import com.marcos.sc.exceptions.ValidarCPFException;
 import com.marcos.sc.repository.PessoaEnderecoRepository;
 import com.marcos.sc.repository.PessoaRepository;
 import com.marcos.sc.repository.TelefoneRepository;
+import com.marcos.sc.util.ValidarCPF;
 
 import java.util.List;
 
@@ -28,7 +30,15 @@ public class PessoaService {
     TelefoneRepository telefoneRepository;
 
 
-    public Pessoa salvarCompleto(Pessoa pessoa){
+    public Pessoa salvarCompleto(Pessoa pessoa) throws ValidarCPFException{
+    	
+    	ValidarCPF.cpfValido(pessoa.getCpf());
+    	
+    	Pessoa pessoaEncontrada = pessoaRepository.buscaCpf(pessoa.getCpf());
+    	if(pessoaEncontrada != null) {    		
+    	
+    	throw new ValidarCPFException("CPF invalido!");
+    	}
              
        Pessoa pessoaSalva = pessoaRepository.save(pessoa);
         
@@ -61,6 +71,8 @@ public class PessoaService {
     public List<Pessoa> buscarAtivo(String ativo){
         return pessoaRepository.buscarAtivos(ativo);
     }
+    
+    
     
     
     public ResponseEntity<Object> consultarCpf(String cpf){

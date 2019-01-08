@@ -1,9 +1,12 @@
+
 package com.marcos.sc.resource;
 
 import com.marcos.sc.entity.Pessoa;
+import com.marcos.sc.exceptions.ValidarCPFException;
 import com.marcos.sc.negocio.service.PessoaService;
 import com.marcos.sc.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +27,8 @@ public class PessoaResource {
     public List<Pessoa> buscarPessoa(){
         return pessoaService.listarTodos();
     }
+    
+  
 
     @GetMapping("/pessoa/cpf/{cpf}")//endpoint
     public ResponseEntity<Pessoa> buscarCPF(@PathVariable String cpf){
@@ -50,9 +55,13 @@ public class PessoaResource {
 
 
     @PostMapping("/pessoa")
-    public Pessoa salvarPessoa(@RequestBody Pessoa pessoa){
+    public ResponseEntity<Object> salvarPessoa(@RequestBody Pessoa pessoa){
 
-        return pessoaService.salvarCompleto(pessoa);
+        try {
+			return ResponseEntity.ok().body(pessoaService.salvarCompleto(pessoa));
+		} catch (ValidarCPFException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
     }
 
     
