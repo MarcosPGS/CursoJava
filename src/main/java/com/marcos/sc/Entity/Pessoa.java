@@ -90,6 +90,13 @@ public class Pessoa implements Serializable {
 		this.cursos = cursos;
 	}
 
+	@Override
+	public String toString() {
+		return "Pessoa [idPessoa=" + idPessoa + ", nome=" + nome + ", cpf=" + cpf + ", ativo=" + ativo
+				+ ", pessoaEnderecos=" + pessoaEnderecos + ", telefones=" + telefones + ", cursos=" + cursos + "]";
+	}
+
+	
 	
     
 }
