@@ -2,6 +2,7 @@
 package com.marcos.sc.resource;
 
 import com.marcos.sc.entity.Pessoa;
+import com.marcos.sc.exceptions.CPFDuplicadoException;
 import com.marcos.sc.exceptions.ValidarCPFException;
 import com.marcos.sc.negocio.service.PessoaService;
 import com.marcos.sc.repository.PessoaRepository;
@@ -60,7 +61,11 @@ public class PessoaResource {
         try {
 			return ResponseEntity.ok().body(pessoaService.salvarCompleto(pessoa));
 		} catch (ValidarCPFException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+		}
+        catch (CPFDuplicadoException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+			
 		}
     }
 

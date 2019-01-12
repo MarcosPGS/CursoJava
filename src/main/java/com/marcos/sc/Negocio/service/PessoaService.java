@@ -2,6 +2,7 @@ package com.marcos.sc.negocio.service;
 
 import com.marcos.sc.entity.Pessoa;
 import com.marcos.sc.entity.PessoaEndereco;
+import com.marcos.sc.exceptions.CPFDuplicadoException;
 import com.marcos.sc.exceptions.ValidarCPFException;
 import com.marcos.sc.repository.PessoaEnderecoRepository;
 import com.marcos.sc.repository.PessoaRepository;
@@ -30,27 +31,35 @@ public class PessoaService {
     TelefoneRepository telefoneRepository;
 
 
-    public Pessoa salvarCompleto(Pessoa pessoa) throws ValidarCPFException{
+    public Pessoa salvarCompleto(Pessoa pessoa) throws ValidarCPFException, CPFDuplicadoException{
     	
-    	ValidarCPF.cpfValido(pessoa.getCpf());
+    	
+    	if ( ! ValidarCPF.cpfValido(pessoa.getCpf()) ) {
+    		throw new ValidarCPFException("CPF invalido!");
+    	}
     	
     	Pessoa pessoaEncontrada = pessoaRepository.buscaCpf(pessoa.getCpf());
     	if(pessoaEncontrada != null) {    		
     	
-    	throw new ValidarCPFException("CPF invalido!");
+    		throw new CPFDuplicadoException("CPF Duplicado");
+    		
     	}
              
        Pessoa pessoaSalva = pessoaRepository.save(pessoa);
         
        // ESSAS LINHAS DE CODIGO SERVE PARA SETAR O ID DE PESSOA COM O ENDEREÇO E TELEFONE
-        pessoa.getPessoaEnderecos().forEach(endereco->{// SALVAR OS ENDERECO JUNTO COM PESSOA
-        	endereco.setIdpessoa(pessoaSalva.getIdPessoa());
-        });
-        
-        pessoa.getTelefones().forEach(telefone->{// SALVAR OS NUMEROS DE TELEFONE JUNTO COM PESSOA
-        	telefone.setIdpessoa(pessoaSalva.getIdPessoa());
-        });
-        pessoaRepository.save(pessoa);  
+       if(pessoa.getPessoaEnderecos() != null) {
+	        pessoa.getPessoaEnderecos().forEach(endereco->{// SALVAR OS ENDERECO JUNTO COM PESSOA
+	        	endereco.setIdpessoa(pessoaSalva.getIdPessoa());
+	        });
+       }
+       if (pessoa.getTelefones() != null) {
+    	   pessoa.getTelefones().forEach(telefone->{// SALVAR OS NUMEROS DE TELEFONE JUNTO COM PESSOA
+           	telefone.setIdpessoa(pessoaSalva.getIdPessoa());
+           });
+       }
+       
+       pessoaRepository.save(pessoa);  
       
     return pessoaSalva;
     }
