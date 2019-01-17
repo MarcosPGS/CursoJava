@@ -3,6 +3,7 @@ package com.marcos.sc.negocio.service;
 import com.marcos.sc.entity.Pessoa;
 import com.marcos.sc.entity.PessoaEndereco;
 import com.marcos.sc.exceptions.CPFDuplicadoException;
+import com.marcos.sc.exceptions.CpfValidoOuInvalidoException;
 import com.marcos.sc.exceptions.ValidarCPFException;
 import com.marcos.sc.repository.PessoaEnderecoRepository;
 import com.marcos.sc.repository.PessoaRepository;
@@ -64,7 +65,7 @@ public class PessoaService {
     return pessoaSalva;
     }
 
-    
+
 
 
     public List<Pessoa> listarTodos(){
@@ -73,6 +74,7 @@ public class PessoaService {
     
 
     public Pessoa buscarCPF(String cpf){
+    	
         return pessoaRepository.buscaCpf(cpf);
     }
     
